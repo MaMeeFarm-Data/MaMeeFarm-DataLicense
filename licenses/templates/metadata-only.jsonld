@@ -1,0 +1,14 @@
+{
+  "@context": [
+    "https://schema.org",
+    {
+      "hashSHA256": "https://w3id.org/security#digestValue",
+      "dataFile": "https://schema.org/MediaObject"
+    }
+  ],
+  "@type": "CreativeWork",
+  "name": "Metadata-Only License (No rights to redistribute media)",
+  "license": "https://mameefarm.example/licenses/metadata-only",
+  "usageInfo": "You may view and reference this metadata. No right to redistribute audio/video content.",
+  "conditionsOfAccess": "For metadata archival and research uses only."
+}
