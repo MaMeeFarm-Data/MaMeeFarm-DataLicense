@@ -1,0 +1,37 @@
+{
+  "@context": [
+    "https://schema.org",
+    {"@vocab": "https://schema.org/"}
+  ],
+  "@type": "Dataset",
+  "name": "MaMeeFarm Digital Creator’s License",
+  "identifier": "MMFARM-PWL-20251013-GLOBAL",
+  "license": "https://mameefarm.github.io/license/MMFARM-PWL-20251013-GLOBAL",
+  "description": "Digital Creator’s License protecting the structural IP of MaMeeFarm’s Proof-of-Work Life-Data System. Non-Commercial, Attribution, No-Derivatives unless explicitly licensed.",
+  "creator": {
+    "@type": "Organization",
+    "name": "MaMeeFarm",
+    "url": "https://github.com/MaMeeFarm"
+  },
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "MaMeeFarm"
+  },
+  "copyrightNotice": "© 2025 MaMeeFarm. All rights reserved under the Digital Creator’s License.",
+  "dateCreated": "2025-10-13T17:38:56Z",
+  "inLanguage": ["th", "en"],
+  "keywords": ["MaMeeFarm", "Proof-of-Work", "IPFS", "GitHub", "Polygon", "License"],
+  "isAccessibleForFree": true,
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "application/ld+json",
+    "contentUrl": "ipfs://REPLACE_WITH_CID_WHEN_PINNED"
+  },
+  "usageInfo": "Fair Use / Non-Commercial only. Commercial use requires written permission. Automatic similarity monitoring and global alert enabled.",
+  "conditionsOfAccess": "No resale, no system cloning, no derivative commercialization without an explicit license grant.",
+  "about": [
+    {"@type": "Thing", "name": "Proof-of-Work Agricultural System"},
+    {"@type": "Thing", "name": "7 Ducks of Hope"},
+    {"@type": "Thing", "name": "Seed of Hope"}
+  ]
+}
