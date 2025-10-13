@@ -1,47 +1,100 @@
-name: Build Data Licenses (JSON-LD)
+name: Build & Publish License JSON-LD
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "17 * * * *"  # รันทุกชั่วโมง นาทีที่ 17
+  workflow_dispatch: {}
+  push:
+    paths:
+      - .github/workflows/build_licenses.yml
+
+permissions:
+  contents: write
 
 jobs:
-  build-licenses:
+  build-license:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install jq (for JSON validation)
         run: |
-          python -m pip install --upgrade pip requests
+          sudo apt-get update -y
+          sudo apt-get install -y jq
 
-      - name: Generate licenses
-        env:
-          ARCHIVE_REPO: "MaMeeFarm-Data/MaMeeFarm-TikTok-Archive"
-          ARCHIVE_BRANCH: "main"
-        run: python scripts/make_license_from_archive.py
-
-      - name: Commit & Push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare variables
+        id: prep
         run: |
-          git config user.name  "license-bot"
-          git config user.email "bot@mameefarm.local"
-          git add licenses/output/*.jsonld || true
-          if git diff --cached --quiet; then
-            echo "No new licenses."
-            exit 0
+          TODAY="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          DATEID="$(date -u +%Y%m%d)"
+          LICENSE_ID="MMFARM-PWL-${DATEID}-GLOBAL"
+
+          echo "today=${TODAY}" >> $GITHUB_OUTPUT
+          echo "dateid=${DATEID}" >> $GITHUB_OUTPUT
+          echo "license_id=${LICENSE_ID}" >> $GITHUB_OUTPUT
+
+      - name: Generate License JSON-LD
+        run: |
+          mkdir -p licenses
+
+          cat > "licenses/${{ steps.prep.outputs.license_id }}.jsonld" <<EOF
+          {
+            "@context": [
+              "https://schema.org",
+              {"@vocab": "https://schema.org/"}
+            ],
+            "@type": "Dataset",
+            "name": "MaMeeFarm Digital Creator’s License",
+            "identifier": "${{ steps.prep.outputs.license_id }}",
+            "license": "https://mameefarm.github.io/license/${{ steps.prep.outputs.license_id }}",
+            "description": "Digital Creator’s License protecting the structural IP of MaMeeFarm’s Proof-of-Work Life-Data System. Non-Commercial, Attribution, No-Derivatives unless explicitly licensed.",
+            "creator": {
+              "@type": "Organization",
+              "name": "MaMeeFarm",
+              "url": "https://github.com/MaMeeFarm"
+            },
+            "copyrightHolder": {
+              "@type": "Organization",
+              "name": "MaMeeFarm"
+            },
+            "copyrightNotice": "© 2025 MaMeeFarm. All rights reserved under the Digital Creator’s License.",
+            "dateCreated": "${{ steps.prep.outputs.today }}",
+            "inLanguage": ["th", "en"],
+            "keywords": ["MaMeeFarm", "Proof-of-Work", "IPFS", "GitHub", "Polygon", "License"],
+            "isAccessibleForFree": true,
+            "distribution": {
+              "@type": "DataDownload",
+              "encodingFormat": "application/ld+json",
+              "contentUrl": "ipfs://REPLACE_WITH_CID_WHEN_PINNED"
+            },
+            "usageInfo": "Fair Use / Non-Commercial only. Commercial use requires written permission. Automatic similarity monitoring and global alert enabled.",
+            "conditionsOfAccess": "No resale, no system cloning, no derivative commercialization without an explicit license grant.",
+            "about": [
+              {"@type": "Thing", "name": "Proof-of-Work Agricultural System"},
+              {"@type": "Thing", "name": "7 Ducks of Hope"},
+              {"@type": "Thing", "name": "Seed of Hope"}
+            ]
+          }
+          EOF
+
+      - name: Validate JSON syntax
+        run: |
+          jq . "licenses/${{ steps.prep.outputs.license_id }}.jsonld" > /dev/null
+
+      - name: Auto-commit license file (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain licenses)" ]; then
+            git add licenses
+            git commit -m "chore(license): add ${{ steps.prep.outputs.license_id }} JSON-LD"
+            git push
+          else
+            echo "No changes to commit."
           fi
-          git commit -m "license: update JSON-LD (auto)"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-${{ steps.prep.outputs.license_id }}
+          path: licenses/${{ steps.prep.outputs.license_id }}.jsonld
