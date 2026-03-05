@@ -3,7 +3,7 @@ name: Build Data Licenses (JSON-LD) — v2
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 * * * *"  # hourly at :17 (same timing as v1 or change if you want)
+    - cron: "19 * * * *"  # hourly at :19 (ไม่ชนของเดิม)
 
 jobs:
   build-licenses-v2:
@@ -31,7 +31,8 @@ jobs:
           ARCHIVE_BRANCH: "main"
           DATA_PREFIX: "data/"
           LICENSE_POLICY_ID: "MMFARM-POL-2025"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LICENSE_HOLDER: "MaMeeFarm"
+          LICENSE_ISSUER: "MaMeeFarm"
         run: python scripts/v2/make_license_from_archive.py
 
       - name: Commit & Push (v2)
