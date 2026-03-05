@@ -1,0 +1,63 @@
+{
+  "@context": [
+    "https://schema.org",
+    { "@vocab": "https://schema.org/" }
+  ],
+  "@type": "CreativeWork",
+  "name": "MaMeeFarm Real-Work Data License",
+  "identifier": "MMFARM-POL-2025-GLOBAL",
+  "version": "2.0",
+  "description": "Platform-agnostic governance license for MaMeeFarm Real-Work Data. The license protects human-generated work, ensures verifiable provenance, and defines conditions for non-commercial use, attribution, and commercial licensing.",
+  "license": "DGCP | MMFARM-POL-2025",
+
+  "creator": {
+    "@type": "Organization",
+    "name": "MaMeeFarm"
+  },
+
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "MaMeeFarm"
+  },
+
+  "dateCreated": "2026-03-05T00:00:00Z",
+
+  "inLanguage": [
+    "en",
+    "th"
+  ],
+
+  "keywords": [
+    "MaMeeFarm",
+    "Real-Work Data",
+    "Proof-of-Work",
+    "DGCP",
+    "Data Governance",
+    "Continuous Proof",
+    "Human Work Data",
+    "License"
+  ],
+
+  "isAccessibleForFree": true,
+
+  "usageInfo": "Non-commercial research, education, and documentary reference may be permitted with attribution. Any commercial use, redistribution, dataset packaging, or AI model training requires explicit written authorization from MaMeeFarm.",
+
+  "conditionsOfAccess": "No resale. No unauthorized commercial replication. No derivative commercialization. AI training or dataset integration requires explicit license approval.",
+
+  "publishingPrinciples": "Append-only governance. License records and associated data proofs are never retroactively modified. Updates are issued as new records.",
+
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "Real-Work Data Ecosystem"
+    },
+    {
+      "@type": "Thing",
+      "name": "Data Governance and Continuous Proof (DGCP)"
+    },
+    {
+      "@type": "Thing",
+      "name": "Proof-of-Work Agricultural System"
+    }
+  ]
+}
