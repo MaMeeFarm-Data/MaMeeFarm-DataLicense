@@ -1,0 +1,25 @@
+{
+  "@context": [
+    "https://schema.org",
+    { "@vocab": "https://schema.org/" }
+  ],
+  "@type": "CreativeWork",
+  "name": "MaMeeFarm Real-Work Data License",
+  "identifier": "MMFARM-POL-2025",
+  "version": "2.0",
+  "license": "DGCP | MMFARM-POL-2025",
+  "description": "Platform-agnostic governance license for MaMeeFarm Real-Work Data. Non-commercial reference may be permitted with attribution. Any commercial use, redistribution, dataset packaging, or AI model training requires explicit written authorization.",
+  "usageInfo": "Non-commercial research, education, and documentary reference may be permitted with attribution. Commercial use or AI training requires explicit permission from the rights holder.",
+  "conditionsOfAccess": "No resale. No unauthorized commercial replication. No derivative commercialization. AI training or dataset integration requires explicit license grant.",
+  "publishingPrinciples": "Append-only governance. No retroactive modification of issued license records. Updates are issued as new records.",
+  "inLanguage": ["en", "th"],
+  "keywords": [
+    "MaMeeFarm",
+    "Real-Work Data",
+    "DGCP",
+    "Data Governance",
+    "Continuous Proof",
+    "License",
+    "Append-only"
+  ]
+}
