@@ -1,0 +1,52 @@
+name: Build Data Licenses (JSON-LD) — v2
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"  # hourly at :17 (same timing as v1 or change if you want)
+
+jobs:
+  build-licenses-v2:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: python -m pip install --upgrade pip requests
+
+      - name: Generate licenses (v2)
+        env:
+          ARCHIVE_REPO: "MaMeeFarm-Data/MaMeeFarm-DataArchive"
+          ARCHIVE_BRANCH: "main"
+          DATA_PREFIX: "data/"
+          LICENSE_POLICY_ID: "MMFARM-POL-2025"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/v2/make_license_from_archive.py
+
+      - name: Commit & Push (v2)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "license-bot"
+          git config user.email "bot@mameefarm.local"
+
+          git add licenses/output_v2/*.license.jsonld .state/seen_output_v2.json || true
+
+          if git diff --cached --quiet; then
+            echo "No new v2 licenses."
+            exit 0
+          fi
+
+          git commit -m "license: update JSON-LD (v2 auto)"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
